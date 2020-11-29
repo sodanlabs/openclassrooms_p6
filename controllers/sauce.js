@@ -57,7 +57,6 @@ exports.reviewSauce = (req, res, next) => {
   const reqLike = req.body.like;
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-      console.log(sauce);
       let arrayOfUsersLiked = sauce.usersLiked;
       let arrayOfUsersDisliked = sauce.usersDisliked;
       let message;
