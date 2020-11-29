@@ -57,15 +57,13 @@ exports.reviewSauce = (req, res, next) => {
   const reqLike = req.body.like;
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-      // ****************************************************************************
       console.log(sauce);
       let arrayOfUsersLiked = sauce.usersLiked;
       let arrayOfUsersDisliked = sauce.usersDisliked;
       let message;
       let likesCounter = sauce.likes;
       let dislikesCounter = sauce.dislikes;
-      console.log("Fin des assignations");
-      console.log("/Début de la logique ************************************/")
+
       if (reqLike == 0) {
         arrayOfUsersLiked.forEach((user, index) => {
           if (user === req.body.userId) {
@@ -89,28 +87,9 @@ exports.reviewSauce = (req, res, next) => {
         arrayOfUsersDisliked.push(req.body.userId);
         message = "Vous n'aimez pas cette sauce !";
       }
-      console.log("/Fin de la logique **************************************/")
-
       Sauce.updateOne({ _id: req.params.id }, { likes: likesCounter, dislikes: dislikesCounter, usersLiked: arrayOfUsersLiked, usersDisliked: arrayOfUsersDisliked })
         .then(() => res.status(200).json({ message: message }))
         .catch(error => res.status(400).json({ error }));
-
-      // res.status(200).json({ message: "Sauce Liked !"});
-      // *************************************************************************** 
     })
     .catch((error) => { res.status(404).json({ error }); });
 };
-
-
-/*
-userId = req.body.userId
-productId = req.params.id
-*/
-
-/*
-  si LIKES && DISLIKES N'EXISTE PAS
-    ALORS AJOUTER userId: chaîne & (likes || dislikes)
-  SINON SI LIKES EXISTE
-      je récupère 
-  SINON ERREUR 418
-*/
